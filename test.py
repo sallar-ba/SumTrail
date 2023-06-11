@@ -20,6 +20,11 @@ pygame.display.set_icon(icon)
 
 BG = pygame.image.load("assets\imgs\Background.png")
 
+global selected_numbers, level
+selected_numbers = []
+level = 0
+
+
 def get_font(name, size): 
     return pygame.font.Font("assets\\font\\" + name + ".ttf", size)
 
@@ -46,23 +51,17 @@ def play(level):
                                        
         SCREEN.blit(BG, (0, 0))
         
-        if sum == maxSumDescent:
-            SCREEN.blit(font.render("WINNER", True, WHITE), (100, 50))
-            SCREEN.blit(font.render("Max Sum : " + str(maxSumDescent), True, WHITE), (100, 100))
-            # print("WIN")
-            # pygame.quit()
-            # sys.exit()
+        global selected_numbers                
+                
+        if len(selected_numbers) == level:
+            check_win(selected_numbers)
             
         SCREEN.blit(font.render("Sum: " + str(sum), True, WHITE), (1050, 50))
         draw_triangle(buttons)
         pygame.display.update()
         clock.tick(60)
 
-# def win(sum):
-#     if sum == maxSumDescent:
-        
-
-
+     
 def calculate_max_sum_descent(triangle):
     triangle_height = len(triangle)
     for i in range(triangle_height - 2, -1, -1):
@@ -77,9 +76,41 @@ def handle_click(click_pos, buttons):
         for button in button_row:
             if button.checkForInput(click_pos):
                 # Custom action when a number is clicked
-                global sum
-                sum += int(button.text_input)
+                global sum, selected_numbers
+                selected_numbers.append(int(button.text_input))
+                print(selected_numbers)
+                button.changeColor(click_pos)
+                sum += int(button.text_input)                
                 return sum
+
+def check_win(selected_number):
+    font = get_font("pixeltype", 175)
+    clock = pygame.time.Clock()
+
+    global sum
+    
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+                                       
+        SCREEN.blit(BG, (0, 0))
+    
+    
+        if sum == maxSumDescent:
+            SCREEN.blit(font.render("WINNER", True, WHITE), (500, 50))
+            SCREEN.blit(font.render("Max Sum : " + str(maxSumDescent), True, WHITE), (350, 200))
+        else:
+            SCREEN.blit(font.render("LOSER", True, WHITE), (500, 50))
+            SCREEN.blit(font.render("Your Sum : " + str(sum), True, WHITE), (350, 200))
+            
+            SCREEN.blit(font.render("Max Sum : " + str(maxSumDescent), True, WHITE), (350, 375))
+
+        pygame.display.update()
+        clock.tick(60)
+
 
 def makeTriangle(level):
     triangle = []
@@ -143,17 +174,21 @@ def levels():
         for button in [LEVEL_3, LEVEL_5, LEVEL_7]:
             button.changeColor(MENU_MOUSE_POS)
             button.update(SCREEN)
-        
+        global level
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if LEVEL_3.checkForInput(MENU_MOUSE_POS):
-                    play(3)
+                    level = 3
+                    play(level)
                 if LEVEL_5.checkForInput(MENU_MOUSE_POS):
-                    play(5)
+                    level = 5
+                    play(level)
                 if LEVEL_7.checkForInput(MENU_MOUSE_POS):
+                    level = 7                    
                     play(7)
 
         pygame.display.update()    
