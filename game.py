@@ -1,7 +1,6 @@
 import pygame
 import sys
 import random
-import math
 from button import Button
 
 #Initializing the PyGame
@@ -30,6 +29,8 @@ def play(level):
     font = get_font("pixeltype", 75)
     triangle = makeTriangle(level)
     buttons = create_buttons(triangle)
+    maxSumDescent = calculate_max_sum_descent(triangle)
+    print(maxSumDescent)
     sky_surface = pygame.image.load("assets\imgs\Background.png").convert()
     
     global sum
@@ -43,13 +44,26 @@ def play(level):
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     handle_click(pygame.mouse.get_pos(), buttons)
+        if sum == maxSumDescent:
+            print("WIN")
+            pygame.quit()
+            sys.exit()
         
         SCREEN.blit(sky_surface, (0, 0))
         SCREEN.blit(font.render("Sum: " + str(sum), True, 'White'), (1050, 50))
         draw_triangle(buttons)
         pygame.display.update()
         clock.tick(60)
-               
+
+def calculate_max_sum_descent(triangle):
+    triangle_height = len(triangle)
+    for i in range(triangle_height - 2, -1, -1):
+        row = triangle[i]
+        next_row = triangle[i + 1]
+        for j in range(len(row)):
+            row[j] += max(next_row[j], next_row[j + 1])
+    return triangle[0][0]
+
 def handle_click(click_pos, buttons):
     for button_row in buttons:
         for button in button_row:
