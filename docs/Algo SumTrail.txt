@@ -1,0 +1,41 @@
+Algorithms:
+
+
+ALGORITHM SumTrail()
+	Output: User won the Game or Not
+
+	triangle = makeTraingle() // Triangle of Size 3, 5, and 7
+	maxSum = calculateMaxSum(triangle)
+	userSum = inputUserPath()
+	if maxSum = userSum
+		return True
+	return False
+
+
+ALGORITHM calculateMaxSum(triangle)
+	Input: A triangular array "triangle"
+	Output: Maximum sum achievable by descending from the top to the bottom of the triangle
+
+	for row <- 1 to length(triangle) - 1 do
+        	for col <- 0 to length(triangle[row]) - 1 do
+            		if col = 0 then
+                		triangle[row][col] <- triangle[row][col] + triangle[row - 1][col]
+            		else if col = length(triangle[row]) - 1 then
+                		triangle[row][col] <- triangle[row][col] + triangle[row - 1][col - 1]
+            		else
+                		triangle[row][col] <- triangle[row][col] + max(triangle[row - 1][col - 1], triangle[row - 1][col])
+
+    	return triangle[length(triangle) - 1][0]
+
+
+ALGORITHM makeTriangle()
+	Output: A triangular array of size 3, 5, or 7 with random numbers inside
+	
+	size <- randomly choose 3, 5, or 7
+	triangle <- empty triangular array of size "size"
+	for row <- 0 to "size" - 1 do
+    		triangle[row] <- empty array of length row + 1
+    		for col <- 0 to row do
+        		triangle[row][col] <- randomly generate a number
+
+	return triangle
