@@ -20,9 +20,11 @@ pygame.display.set_icon(icon)
 
 BG = pygame.image.load("assets\imgs\Background.png")
 
-global selected_numbers, level
+global selected_numbers, level, last_selected_index
 selected_numbers = []
 level = 0
+last_selected_index = 0
+
 
 
 def get_font(name, size):
@@ -32,12 +34,13 @@ def get_font(name, size):
 def play(level):
     clock = pygame.time.Clock()
     font = get_font("pixeltype", 75)
-    global triangle
+    global triangle, last_selected_index
     triangle = makeTriangle(level)
     print(triangle)
     buttons = create_buttons(triangle)
     global total_sum
     total_sum = 0
+    last_selected_index = 0
 
     while True:
         for event in pygame.event.get():
@@ -65,36 +68,40 @@ def calculate_max_sum_descent(triangle):
         row = triangle[i]
         next_row = triangle[i + 1]
         for j in range(len(row)):
-            # print(i)
-            print(row)
             row[j] += max(next_row[j], next_row[j + 1])
     return triangle[0][0]
 
 
+
 def handle_click(click_pos, buttons):
-    global level, selected_numbers, total_sum
+    global level, selected_numbers, total_sum, last_selected_index
 
     for i, button_row in enumerate(buttons):
         for j, button in enumerate(button_row):
             if button.checkForInput(click_pos):
                 selected_number = int(button.text_input)
-                if len(selected_numbers) == 0 or (i == len(selected_numbers) and j in [0, 1]):
+                if len(selected_numbers) == 0 or (i == len(selected_numbers) and j in [last_selected_index, last_selected_index + 1]):
                     selected_numbers.append(selected_number)
                     button.changeColor(click_pos)
                     total_sum += selected_number  # Update the sum
-
+                    last_selected_index = j
                     if len(selected_numbers) < level:
                         if i < len(buttons) - 1:
                             buttons[i + 1][j].changeColor(click_pos)
                             buttons[i + 1][j + 1].changeColor(click_pos)
-
                     return selected_number, total_sum
-
     return None, total_sum
 
 
 
-
+def get_valid_indices(buttons, row, col):
+    valid_indices = []
+    if row < len(buttons) - 1:
+        if col < len(buttons[row + 1]):
+            valid_indices.append(col)
+        if col - 1 >= 0 and col - 1 < len(buttons[row + 1]):
+            valid_indices.append(col - 1)
+    return valid_indices
 
 
 def check_win(selected_numbers):
