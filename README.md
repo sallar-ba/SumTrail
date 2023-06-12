@@ -14,7 +14,7 @@ SumTrail is an interactive number selection game based on Maximum Sum Descent Pr
 
 ## How to Play
 
-1. Download the latest release of SumTrail from the [Releases]() page.
+1. Download the latest release of SumTrail from the [Releases](https://github.com/sallar-ba/SumTrail/releases) page.
 2. Extract the downloaded ZIP file to a convenient location on your computer.
 3. Double-click on the `SumTrail.exe` file to start the game.
 4. Select a difficulty level from the main menu.
