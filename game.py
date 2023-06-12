@@ -34,6 +34,8 @@ def get_font(name, size):
 def play(level):
     clock = pygame.time.Clock()
     font = get_font("pixeltype", 75)
+    fontMed = get_font("pixeltype", 40)
+    fontSmall = get_font("pixeltype", 20)
     global triangle, last_selected_index
     triangle = makeTriangle(level)
     print(triangle)
@@ -52,6 +54,12 @@ def play(level):
                     handle_click(pygame.mouse.get_pos(), buttons)
 
         SCREEN.blit(BG, (0, 0))
+
+        SCREEN.blit(fontMed.render("Instructions:", True, WHITE), (50, 20))
+
+        SCREEN.blit(fontSmall.render("- Click on it with the left mouse button", True, WHITE), (50, 55))
+        SCREEN.blit(fontSmall.render("- You can only select numbers that are directly below the current number you have selected", True, WHITE), (50, 80))
+        SCREEN.blit(fontSmall.render("- You can only select one number at each level", True, WHITE), (50, 105))
 
         if len(selected_numbers) == level:
             check_win(selected_numbers)
