@@ -101,17 +101,6 @@ def handle_click(click_pos, buttons):
     return None, total_sum
 
 
-
-def get_valid_indices(buttons, row, col):
-    valid_indices = []
-    if row < len(buttons) - 1:
-        if col < len(buttons[row + 1]):
-            valid_indices.append(col)
-        if col - 1 >= 0 and col - 1 < len(buttons[row + 1]):
-            valid_indices.append(col - 1)
-    return valid_indices
-
-
 def check_win(selected_numbers):
     font = get_font("pixeltype", 175)
     clock = pygame.time.Clock()
