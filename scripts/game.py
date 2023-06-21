@@ -1,7 +1,7 @@
 import pygame
 import sys
 import random
-from button import Button
+from scripts.button import Button
 
 # Initializing PyGame
 pygame.init()
@@ -269,6 +269,4 @@ def check_win(selected_numbers):
         pygame.display.update()
         clock.tick(60)
         
-        
-if __name__ == "__main__":
-    main_menu()
+
