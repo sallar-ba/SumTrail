@@ -27,6 +27,11 @@ last_selected_index = 0
 
 
 
+
+
+
+
+
 def get_font(name, size):
     return pygame.font.Font("assets\\font\\" + name + ".ttf", size)
 
@@ -55,11 +60,11 @@ def play(level):
 
         SCREEN.blit(BG, (0, 0))
 
-        SCREEN.blit(fontMed.render("Instructions:", True, WHITE), (50, 20))
+        # SCREEN.blit(fontMed.render("Instructions:", True, WHITE), (50, 20))
 
-        SCREEN.blit(fontSmall.render("- Click on it with the left mouse button", True, WHITE), (50, 55))
-        SCREEN.blit(fontSmall.render("- You can only select numbers that are directly below the current number you have selected", True, WHITE), (50, 80))
-        SCREEN.blit(fontSmall.render("- You can only select one number at each level", True, WHITE), (50, 105))
+        # SCREEN.blit(fontSmall.render("- Click on it with the left mouse button", True, WHITE), (50, 55))
+        # SCREEN.blit(fontSmall.render("- You can only select numbers that are directly below the current number you have selected", True, WHITE), (50, 80))
+        # SCREEN.blit(fontSmall.render("- You can only select one number at each level", True, WHITE), (50, 105))
 
         if len(selected_numbers) == level:
             check_win(selected_numbers)
@@ -194,6 +199,50 @@ def levels():
         pygame.display.update()
 
 
+#-------------------    INSTRUCTIONS FUNCTION       ---------------------------
+def instructions():
+    font = get_font("pixeltype", 75)
+
+
+
+    while True:
+        SCREEN.blit(BG, (0, 0))
+
+        INST_MOUSE_POS = pygame.mouse.get_pos()
+
+        INST_TEXT = get_font("font", 100).render("Instructions", True, "#b68f40")
+        INST_RECT = INST_TEXT.get_rect(center=(640, 100))
+
+
+        CONTINUE_BUTTON = Button(image=pygame.image.load("assets\imgs\Play Rect.png"), pos=(640, 600),
+                             text_input="LETS GO!", font=get_font("font", 40), base_color="#d7fcd4",
+                             hovering_color="White")
+
+        SCREEN.blit(INST_TEXT, INST_RECT)
+
+
+        SCREEN.blit(font.render("Click on it with the left mouse button", True, WHITE), (60, 200))
+        SCREEN.blit(font.render("You can only select numbers that are directly below", True, WHITE), (60, 300))
+        SCREEN.blit(font.render("the current number you have selected", True, WHITE), (60, 350))
+
+        # the current number you have selected
+        SCREEN.blit(font.render("You can only select one number at each level", True, WHITE), (60, 450))
+
+
+
+        CONTINUE_BUTTON.changeColor(INST_MOUSE_POS)
+        CONTINUE_BUTTON.update(SCREEN)
+
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if CONTINUE_BUTTON.checkForInput(INST_MOUSE_POS):
+                    levels()
+
+        pygame.display.update()
+
+
+
+
 def main_menu():
     while True:
         SCREEN.blit(BG, (0, 0))
@@ -222,12 +271,16 @@ def main_menu():
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
-                    levels()
+                    instructions()
                 if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
                     pygame.quit()
                     sys.exit()
 
         pygame.display.update()
+
+
+
+
 
 def check_win(selected_numbers):
     font = get_font("pixeltype", 175)
