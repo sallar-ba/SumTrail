@@ -199,6 +199,7 @@ def levels():
         pygame.display.update()
 
 
+
 #-------------------    INSTRUCTIONS FUNCTION       ---------------------------
 def instructions():
     font = get_font("pixeltype", 75)
@@ -242,7 +243,7 @@ def instructions():
 
 
 
-
+#-------------------    MAIN MENU    ---------------------------
 def main_menu():
     while True:
         SCREEN.blit(BG, (0, 0))
@@ -258,6 +259,9 @@ def main_menu():
         QUIT_BUTTON = Button(image=pygame.image.load("assets\imgs\Quit Rect.png"), pos=(640, 450),
                              text_input="QUIT", font=get_font("font", 75), base_color="#d7fcd4",
                              hovering_color="White")
+        SCREEN.blit(get_font("pixeltype", 50).render("v0.3", True, WHITE), (600, 650))
+        SCREEN.blit(get_font("pixeltype", 20).render("Powered By: Sallar & Co.", True, WHITE), (1111, 680))
+
 
         SCREEN.blit(MENU_TEXT, MENU_RECT)
 
